@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+	<import
+		resource="classpath:org/zengsource/mvc/action/editor/builtinActionEditors.xml" />
+
+	<!-- // MVC Actions START ////////////////////////////////////////////////////////////// -->
+	
+	<!-- // Mapping to: signon.jxp                                                        // -->
+	<bean id="signon" class="org.zengsource.demo.mvc.action.SignOnAction" scope="prototype">
+		<property name="forward" value="/signon.jsp" />
+		<property name="userService"><ref bean="userService"/></property>
+	</bean>
+	<!-- // Mapping to: signin.jxp                                                        // -->
+	<bean id="signin" class="org.zengsource.demo.mvc.action.SignInAction" scope="prototype">
+		<property name="forward" value="/signin.jsp" />
+		<property name="userService"><ref bean="userService"/></property>
+	</bean>
+	<!-- // Mapping to: signin.jxp                                                        // -->
+	<bean id="signout" class="org.zengsource.demo.mvc.action.SignOutAction" scope="prototype">
+	</bean>
+	<!-- // Mapping to: home.jxp                                                          // -->
+	<bean id="home" class="org.zengsource.demo.mvc.action.HomeAction" scope="prototype">
+		<!-- <property name="forward" value="/home.jsp" /> -->
+		<property name="userService"><ref bean="userService"/></property>
+	</bean>
+	<!-- // Mapping to: message.jxp                                                       // -->
+	<bean id="message" class="org.zengsource.demo.mvc.action.MessageAction" scope="prototype">
+		<property name="userService"><ref bean="userService"/></property>
+		<property name="messageService"><ref bean="messageService"/></property>
+	</bean>
+	<!-- // Mapping to: user.jxp                                                          // -->
+	<bean id="user" class="org.zengsource.demo.mvc.action.UserAction" scope="prototype">
+		<property name="forward" value="/profile.jsp" />
+		<property name="userService"><ref bean="userService"/></property>
+	</bean>
+	<!-- // Mapping to: profile.jxp                                                          // -->
+	<bean id="profile" class="org.zengsource.demo.mvc.action.ProfileAction" scope="prototype">
+		<property name="userService"><ref bean="userService"/></property>
+	</bean>
+	
+	<!-- // MVC Actions END //////////////////////////////////////////////////////////////// -->
+
+</beans>

@@ -1,0 +1,49 @@
+@CHARSET "UTF-8";
+.default-icon-large {
+	background-image: url("../images/defaultlogo-24.png") !important;
+}
+.top-icon {
+	padding-top: 26px !important;
+	font-size: 13px !important;
+	background-image: url("../images/defaultlogo-24.png") !important;
+}
+.mvc-icon {
+	padding-top: 48px !important;
+	font-size: 16px !important;
+	background-image: url("../images/mvc-apple-48.png") !important;
+}
+.extjs4-icon {
+	padding-top: 26px !important;
+	font-size: 13px !important;
+	background-image: url("../images/sencha-24.png") !important;
+}
+.jquery-icon {
+	padding-top: 26px !important;
+	font-size: 13px !important;
+	background-image: url("../images/jquery-24.png") !important;
+}
+.yui3-icon {
+	padding-top: 26px !important;
+	font-size: 13px !important;
+	background-image: url("../images/yui3-24.png") !important;
+}
+.w3c-icon {
+	padding-top: 26px !important;
+	font-size: 13px !important;
+	background-image: url("../images/w3c-24.png") !important;
+}
+.back-icon {
+	background-image: url("http://zsn.cc/resources/icons/silk/png/arrow_undo.png") !important;
+}
+.signon-icon {
+	background-image: url("http://zsn.cc/resources/icons/silk/png/user_add.png") !important;
+}
+.signin-icon {
+	background-image: url("http://zsn.cc/resources/icons/silk/png/user_go.png") !important;
+}
+.signout-icon {
+	background-image: url("http://zsn.cc/resources/icons/silk/png/user_gray.png") !important;
+}
+.home-icon {
+	background-image: url("http://zsn.cc/resources/icons/silk/png/house.png") !important;
+}
