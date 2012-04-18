@@ -4,7 +4,7 @@
 
   <groupId>org.zengsource</groupId>
   <artifactId>zengsource-mvc</artifactId>
-  <version>1.0</version>
+  <version>1.1.Beta</version>
   <packaging>jar</packaging>
 
   <name>zengsource-mvc</name>
@@ -24,7 +24,7 @@
     <dependency>
     	<groupId>org.zengsource</groupId>
     	<artifactId>zengsource-util</artifactId>
-    	<version>1.0</version>
+    	<version>1.1.Beta</version>
     	<type>jar</type>
     	<scope>compile</scope>
     </dependency>

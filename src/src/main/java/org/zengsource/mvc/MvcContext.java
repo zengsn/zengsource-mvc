@@ -61,11 +61,9 @@ public class MvcContext implements Serializable {
 
 	// ~ 逻辑方法 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
-	public void init(WebAppContextHelper springContextHelper,
-			String actionEditorName) {
+	public void init(WebAppContextHelper springContextHelper, String actionEditorName) {
 		if (this.applicationContext == null) {
-			this.applicationContext = springContextHelper
-					.getApplicationContext();
+			this.applicationContext = springContextHelper.getApplicationContext();
 		}
 		if (this.actionEditorName == null) {
 			this.actionEditorName = actionEditorName;
@@ -91,20 +89,20 @@ public class MvcContext implements Serializable {
 		String context = this.request.getContextPath();
 		String reqUrl = this.request.getRequestURL().toString();
 		if (StringUtil.isBlank(context)) { // ROOT.war
-			String tmp = reqUrl.replace("http://", "").replace("https://", "");
-			int contextStart = tmp.indexOf("/");
+			String temp = reqUrl.replace("http://", "").replace("https://", "");
+			int contextStart = temp.indexOf("/");
 			if (contextStart > -1) {
-				return tmp.substring(contextStart);
-			} else {
-				return reqUrl.substring(0, reqUrl.length() - tmp.length()
-						+ contextStart);
+				temp = temp.substring(contextStart);
+				reqUrl = reqUrl.replace(temp, "");
+			} else { // 不带 / 肯定是只有域名的网站首页，http://www.example.org 
 			}
 		} else { // Not ROOT.war
-			return reqUrl.substring(0,
-					reqUrl.indexOf(context) + context.length());
+			reqUrl = reqUrl.substring(0, reqUrl.indexOf(context) + context.length());
 		}
+		return reqUrl;
 	}
 
+	/** */
 	public String getActionHierachy() {
 		String context = this.request.getContextPath();
 		String reqUrl = this.request.getRequestURL().toString();
@@ -114,12 +112,10 @@ public class MvcContext implements Serializable {
 			if (contextStart > -1) {
 				return tmp.substring(contextStart + 1);
 			} else {
-				throw new RuntimeException("Cannot parse action hierachy from "
-						+ reqUrl);
+				throw new RuntimeException("无法解析：" + reqUrl);
 			}
 		} else { // Not ROOT.war
-			return reqUrl.substring(reqUrl.indexOf(context) + context.length()
-					+ 1);
+			return reqUrl.substring(reqUrl.indexOf(context) + context.length() + 1);
 		}
 	}
 
@@ -158,8 +154,7 @@ public class MvcContext implements Serializable {
 
 	public PluginFactory getPluginFactory() {
 		try {
-			return (PluginFactory) getApplicationContext().getBean(
-					"pluginFactory");
+			return (PluginFactory) getApplicationContext().getBean("pluginFactory");
 		} catch (NoSuchBeanDefinitionException e) {
 			return null;
 		}
@@ -178,7 +173,8 @@ public class MvcContext implements Serializable {
 		}
 		return this.urlSuffixMap.get(name);
 	}
-	
+
+	/** End with '/'. */
 	public String getRootPath() {
 		return getServletContext().getRealPath("/");
 	}
@@ -232,11 +228,11 @@ public class MvcContext implements Serializable {
 	public void setUrlSuffixMap(Map<String, String> urlSuffixMap) {
 		this.urlSuffixMap = urlSuffixMap;
 	}
-	
+
 	public ServletContext getServletContext() {
 		return servletContext;
 	}
-	
+
 	public void setServletContext(ServletContext servletContext) {
 		this.servletContext = servletContext;
 	}

@@ -1,5 +1,6 @@
 /**
- * 
+ * &copy; 2011-2012 ZengSource.com
+ * 2012-2-11
  */
 package org.zengsource.mvc.action;
 
@@ -16,43 +17,34 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.zengsource.mvc.MvcException;
 
 /**
- * @author zeng.xiaoning
+ * 组合 {@link MultipartAction} 和 {@link MultipleAction} 的功能。
  * 
+ * @author zsn
+ * @since 6.0
  */
-public class MultipartAction extends GenericAction {
+public class SuperAction extends MultipleAction {
+
+	// + STATIC ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
 
 	private static final long serialVersionUID = 1L;
 
-	// ~ 对象属性 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-
+	// + FIELDS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
+	
 	private Map<String, FileItem> fileMap;
 
-	// ~ 构造方法 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+	// + CSTORS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
 
-	public MultipartAction() {
-		fileMap = new HashMap<String, FileItem>();
-	}
-
-	// ~ 逻辑方法 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+	// + METHODS +++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
 
 	@Override
 	protected void doInit() throws MvcException {
-		// Check that we have a file upload request
 		boolean isMultipart = ServletFileUpload.isMultipartContent(getRequest());
 		if (isMultipart) {
-			// Create a factory for disk-based file items
 			DiskFileItemFactory factory = new DiskFileItemFactory();
-
-			// Set factory constraints
 			// factory.setSizeThreshold(10 * 1024 * 1024);
 			// factory.setRepository(new File(""));
-
-			// Create a new file upload handler
 			ServletFileUpload upload = new ServletFileUpload(factory);
-
-			// Set overall request size constraint
 			// upload.setSizeMax(10 * 1024 * 1024);
-
 			try {
 				List<?> items = upload.parseRequest(getRequest());
 				for (Object obj : items) {
@@ -66,11 +58,13 @@ public class MultipartAction extends GenericAction {
 							String valueUTF = item.getString("utf-8");
 							setFieldValue(name, valueUTF); // Set normal field
 						} catch (UnsupportedEncodingException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					} else if (item.getSize() > 0) {
 						String fieldName = item.getFieldName();
+						if (this.fileMap == null) {
+							this.fileMap = new HashMap<String, FileItem>();
+						}
 						this.fileMap.put(fieldName, item); // Save file
 					}
 				}
@@ -84,21 +78,17 @@ public class MultipartAction extends GenericAction {
 	}
 
 	protected FileItem getFileItem(String name) throws MvcException {
-		return name == null ? null : this.fileMap.get(name);
+		return name == null ? null : (this.fileMap == null? null : this.fileMap.get(name));
 	}
 
-	/** 文件名可以加或不加扩展名。 */
+	/** 文件名不需要加扩展名。 */
 	protected File saveFile(String name, String filename) throws MvcException {
 		FileItem item = getFileItem(name);
 		if (item != null) {
 			try {
-				String uploadFilename = item.getName();
-				int poc = uploadFilename.lastIndexOf(".");
-				if (poc > -1) {
-					String extension = uploadFilename.substring(poc).toLowerCase();
-					if (!(filename.endsWith(extension))) { // 不带扩展名
-						filename += extension;
-					}
+				String extension = this.getExtension(name);
+				if (!(filename.endsWith(extension))) {
+					filename += extension;
 				}
 				File diskFile = new File(filename);
 				item.write(diskFile);
@@ -112,6 +102,16 @@ public class MultipartAction extends GenericAction {
 		}
 		return null;
 	}
+	
+	protected String getExtension(String fileField) {
+		FileItem item = getFileItem(fileField);
+		String uploadFilename = item.getName();
+		int pos = uploadFilename.lastIndexOf(".");
+		if (pos > -1) {
+			return uploadFilename.substring(pos).toLowerCase();
+		}
+		return "";
+	}
 
 	@Override
 	protected void doDestroy() throws MvcException {
@@ -121,14 +121,15 @@ public class MultipartAction extends GenericAction {
 		}
 	}
 
-	// ~ g^setX ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-
+	// + G^SETTERS +++++++++++++++++++++++++++++++++++++++++++++++++++++ //
+	
 	public Map<String, FileItem> getFileMap() {
 		return fileMap;
 	}
-
+	
 	public void setFileMap(Map<String, FileItem> fileMap) {
 		this.fileMap = fileMap;
 	}
 
+	// + MAIN^TEST +++++++++++++++++++++++++++++++++++++++++++++++++++++ //
 }

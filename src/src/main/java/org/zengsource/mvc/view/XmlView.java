@@ -24,6 +24,7 @@ import org.zengsource.util.StringUtil;
 public class XmlView extends AbstractView {
 
 	public static final XmlView SUCCESS = new XmlView("<response success=\"true\"></response>");
+	public static final XmlView SUCCESS_MSG = new XmlView("<response success=\"true\"><msg>操作成功！</msg></response>");
 
 	public static Element getXmlResponseRoot() {
 		return getXmlResponseRoot(true);
@@ -44,9 +45,9 @@ public class XmlView extends AbstractView {
 	public XmlView() {
 	}
 
-	public XmlView(Document document) {
-		this.document = document;
-		this.xml = document.asXML();
+	public XmlView(Document doc) {
+		this.document = doc;
+		this.xml = doc.asXML();
 	}
 
 	public XmlView(String xml) {

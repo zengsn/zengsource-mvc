@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
 import org.zengsource.mvc.MvcContext;
 import org.zengsource.mvc.MvcException;
 import org.zengsource.mvc.view.AbstractView;
+import org.zengsource.mvc.view.RedirectView;
 
 
 /**
@@ -94,6 +95,10 @@ public abstract class AbstractAction implements Serializable {
 
 	protected void doDestroy() throws MvcException {
 
+	}
+	
+	protected void redirect(String url) throws MvcException {
+		getRequest().setAttribute("_VIEW_", new RedirectView(url));
 	}
 
 	protected MvcContext getContext() {

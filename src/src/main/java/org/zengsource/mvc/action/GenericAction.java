@@ -3,6 +3,8 @@
  */
 package org.zengsource.mvc.action;
 
+import java.util.Enumeration;
+
 import org.zengsource.mvc.MvcException;
 import org.zengsource.mvc.view.AbstractView;
 import org.zengsource.mvc.view.DispatchView;
@@ -18,7 +20,7 @@ public class GenericAction extends AbstractAction {
 	private static final long serialVersionUID = 1L;
 
 	// ~ 对象属性 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-	
+
 	private String actionName;
 
 	private String name;
@@ -56,17 +58,30 @@ public class GenericAction extends AbstractAction {
 		return NumberUtil.string2Integer(limit, 0);
 	}
 
+	protected boolean hasQuery(String name) {
+		if (StringUtil.isBlank(name)) {
+			return false;
+		}
+		Enumeration<?> enumer = this.getRequest().getParameterNames();
+		while (enumer.hasMoreElements()) {
+			if (name.equals(enumer.nextElement())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	// ~ g^setX ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
 
 	@Override
 	public String getActionName() {
 		return actionName;
 	}
-	
+
 	public void setActionName(String actionName) {
 		this.actionName = actionName;
 	}
-	
+
 	public String getName() {
 		return name;
 	}

@@ -18,7 +18,6 @@ package org.zengsource.mvc;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.Enumeration;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -73,12 +72,12 @@ public class InletServlet extends javax.servlet.http.HttpServlet implements java
 		this.pageURLSuffix = getMvcConfig(PARAM_URL_PAGE, "jxp");
 		this.xmlURLSuffix = getMvcConfig(PARAM_URL_XML, "xmd");
 		this.jsonURLSuffix = getMvcConfig(PARAM_URL_JSON, "jsd");
-		Enumeration<?> enumer = getServletContext().getAttributeNames();
-		while (enumer.hasMoreElements()) {
-			String attrName = enumer.nextElement().toString();
-			logger.info(attrName);
-			logger.info(getServletContext().getAttribute(attrName));
-		}
+//		Enumeration<?> enumer = getServletContext().getAttributeNames();
+//		while (enumer.hasMoreElements()) {
+//			String attrName = enumer.nextElement().toString();
+//			logger.info(attrName);
+//			logger.info(getServletContext().getAttribute(attrName));
+//		}
 	}
 
 	/**
@@ -163,6 +162,9 @@ public class InletServlet extends javax.servlet.http.HttpServlet implements java
 			// view = DispatchView.error(e.getClass().getName(),
 			// ExceptionUtil.print(e));
 			// }
+			if (view == null) { // redirected by action
+				view = (AbstractView) request.getAttribute("_VIEW_");
+			}
 		}
 
 		// View

@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.zengsource.mvc.MvcException;
 
-
 /**
  * @author snzeng
  * 
@@ -32,7 +31,7 @@ public class JsonResultView extends HtmlView {
 		resultMap.put(name, value);
 	}
 
-	public JsonResultView(HashMap<String, String> resultMap) {
+	public JsonResultView(Map<String, String> resultMap) {
 		this.resultMap = resultMap;
 	}
 
@@ -45,14 +44,15 @@ public class JsonResultView extends HtmlView {
 	@Override
 	public void forward() throws MvcException {
 		StringBuilder json = new StringBuilder();
-		json.append("\n{\n");
-		json.append("  success:true,\n");
-		json.append("  result: {\n");
+		json.append("{");
+		json.append("success:true,");
+		json.append("result:{");
 		for (String name : this.resultMap.keySet()) {
-			json.append("    " + name + ":'" + this.resultMap.get(name) + "'\n");
+			json.append(name + ":'" + this.resultMap.get(name) + "',");
 		}
-		json.append("  }\n");
-		json.append("}\n");
+		json.deleteCharAt(json.length() - 1);
+		json.append("}");
+		json.append("}");
 		setHtml(json.toString());
 		super.forward();
 	}
